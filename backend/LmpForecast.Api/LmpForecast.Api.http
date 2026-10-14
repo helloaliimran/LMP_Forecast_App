@@ -1,0 +1,6 @@
+@api = http://localhost:5080
+
+POST {{api}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "superadmin@lmpforecast.local", "password": "ChangeMe123" }

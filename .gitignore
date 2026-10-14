@@ -1,0 +1,17 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+backend/LmpForecast.Api/App_Data/
+
+# Node
+node_modules/
+dist/
+*.local
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
