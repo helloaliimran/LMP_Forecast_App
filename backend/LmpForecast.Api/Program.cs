@@ -13,8 +13,16 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Secrets never live in committed files: locally they come from the git-ignored appsettings.Development.json,
+// on Render from environment variables (ConnectionStrings__Default, or the DATABASE_URL of a Render Postgres database).
+var connectionString = builder.Configuration.GetConnectionString("Default");
+if (string.IsNullOrWhiteSpace(connectionString) && builder.Configuration["DATABASE_URL"] is { Length: > 0 } databaseUrl)
+    connectionString = ConnectionStrings.FromDatabaseUrl(databaseUrl);
+if (string.IsNullOrWhiteSpace(connectionString))
+    throw new InvalidOperationException("No database configured. Set ConnectionStrings:Default (appsettings.Development.json locally, ConnectionStrings__Default on Render) or DATABASE_URL.");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"))
+    options.UseNpgsql(connectionString)
         .UseSnakeCaseNamingConvention());
 
 builder.Services
@@ -91,5 +99,6 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/health", () => Results.Ok("ok"));
 
 app.Run();

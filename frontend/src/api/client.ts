@@ -2,7 +2,10 @@ import axios from 'axios'
 
 export const TOKEN_KEY = 'lmp_token'
 
-export const api = axios.create({ baseURL: '/api' })
+// Empty in development (Vite proxies /api); set VITE_API_URL to the backend's URL for a production build.
+const apiOrigin = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')
+
+export const api = axios.create({ baseURL: `${apiOrigin}/api` })
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem(TOKEN_KEY)

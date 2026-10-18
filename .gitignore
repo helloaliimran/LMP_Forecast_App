@@ -5,6 +5,14 @@ obj/
 .vs/
 backend/LmpForecast.Api/App_Data/
 
+# Secrets: local settings stay on your machine, production uses environment variables
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+appsettings.*.local.json
+appsettings.Production.json
+
 # Node
 node_modules/
 dist/

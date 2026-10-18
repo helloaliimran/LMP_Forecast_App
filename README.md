@@ -19,8 +19,13 @@ Create an empty database:
 psql -U postgres -c "CREATE DATABASE lmp_forecast;"
 ```
 
-If your postgres password is not `postgres`, change `ConnectionStrings:Default` in
-`backend/LmpForecast.Api/appsettings.json` (or use `dotnet user-secrets`).
+Create your local settings file from the template and put your postgres password in
+`ConnectionStrings:Default`. The copy is git-ignored, so it never reaches the repo:
+
+```
+cd backend/LmpForecast.Api
+copy appsettings.Development.example.json appsettings.Development.json
+```
 
 Apply the migration (creates all tables):
 
@@ -41,7 +46,7 @@ dotnet run --launch-profile http
 API: http://localhost:5080 · OpenAPI document: http://localhost:5080/openapi/v1.json
 
 On first start it creates the roles (SuperAdmin, Admin, User) and a SuperAdmin from
-`appsettings.Development.json`:
+`appsettings.Development.json` (defaults from the template):
 
 - Email: `superadmin@lmpforecast.local`
 - Password: `ChangeMe123`
